@@ -36,19 +36,19 @@ for($i = 0; $i -lt $Source.Count; $i++)
 $LeftColumnSorted = BubbleSort $LeftColumn
 $RightColumnSorted = BubbleSort $RightColomn
 
-for($i = 0; $i -lt $Source.Count; $i++)
-{
-    $temp = 0
-    if($LeftColumnSorted[$i] -gt $RightColumnSorted[$i])
-    {
-        $temp = $LeftColumnSorted[$i] - $RightColumnSorted[$i]
-    }
-    else
-    {
-        $temp = $RightColumnSorted[$i] - $LeftColumnSorted[$i]
-    }
+[uint64]$total = 0;
 
-    $Distance += $temp
+for($i = 0; $i -lt $LeftColumnSorted.Count; $i++)
+{
+    $tempCounter = 0
+    for ($j = 0; $j -lt $RightColumnSorted.count; $j++)
+    {
+        if($LeftColumnSorted[$i] -eq $RightColumnSorted[$j])
+        {
+            $tempCounter++
+        }
+    }
+    $total += ([int]$LeftColumnSorted[$i] * $tempCounter)
 
 }
 
