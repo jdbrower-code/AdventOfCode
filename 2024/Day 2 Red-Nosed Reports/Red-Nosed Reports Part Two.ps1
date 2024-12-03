@@ -1,5 +1,6 @@
 ﻿
-function Is-ContinuouslyIncreasing {
+function Is-ContinuouslyIncreasing 
+{
     param (
         [int[]]$arr
     )
@@ -12,7 +13,8 @@ function Is-ContinuouslyIncreasing {
     return $true
 }
 
-function Is-ContinuouslyDecreasing {
+function Is-ContinuouslyDecreasing 
+{
     param (
         [int[]]$arr
     )
@@ -25,7 +27,8 @@ function Is-ContinuouslyDecreasing {
     return $true
 }
 
-function No-GreaterThanThree-Increase{
+function No-GreaterThanThree-Increase
+{
     param(
         [int[]]$arr
     )
@@ -40,7 +43,8 @@ function No-GreaterThanThree-Increase{
     return $true
 }
 
-function No-GreaterThanThree-Decrease{
+function No-GreaterThanThree-Decrease
+{
     param(
         [int[]]$arr
     )
@@ -72,6 +76,50 @@ function Matching
     }
 }
 
+function OneOff-Decreasing
+{
+    param(
+        [int[]]$arr
+    )
+    for ($i = 0; $i -lt $arr.Length; $i++) 
+    {
+        $newArr = $arr[0..($i-1)] + $arr[($i+1)..($arr.Length)]
+        if(Matching($newArr))
+        {
+            if(Is-ContinuouslyDecreasing($newArr))
+            {
+                if(No-GreaterThanThree-Decrease($newArr))
+                {
+                    return $true
+                }
+            }
+        }
+    }
+    return $false
+}
+
+function OneOff-Increasing
+{
+    param(
+        [int[]]$arr
+    )
+        for ($i = 0; $i -lt $arr.Length; $i++) {
+        $newArr = $arr[0..($i-1)] + $arr[($i+1)..($arr.Length)]
+        if(Matching($newArr))
+        {
+            if(Is-ContinuouslyIncreasing($newArr))
+            {
+                if(No-GreaterThanThree-Increase($newArr))
+                {
+                    return $true
+                }
+                
+            }
+        }
+    }
+    return $false
+}
+
 $Source = get-content "F:\souce\AdventOfCode\2024\Day 2 Red-Nosed Reports\Red-Nosed Reports Input.txt"
 
 
@@ -91,27 +139,39 @@ for($i = 0; $i -lt 1000; $i++)
     {
         $Temp += [int]$Source[$i].Split(" ")[$j]
     }
+    
+    
 
     if(Matching($Temp))
     {
         if(Is-ContinuouslyIncreasing($Temp))
         {
-            if(No-GreaterThanThree-Increase($temp))
-            {
-                $Safe++
-            }                   
+                if(No-GreaterThanThree-Increase($temp))
+                {
+                     
+                     $Safe++
+                }
      
+                               
         }
-    
         elseif(Is-ContinuouslyDecreasing($Temp))
         {
             if(No-GreaterThanThree-Decrease($Temp))
             {
-                $safe++
+                    $Safe++     
             }
         }
-    }
-    
-}
+     
+     }
+     elseif(OneOff-Increasing($temp))
+     {
+        $Safe++
+     }
+     elseif(OneOff-Decreasing($Temp))
+     {
+        $Safe++
+     }
+ }   
+
 
 $Safe
